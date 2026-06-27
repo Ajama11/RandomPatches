@@ -24,18 +24,18 @@ public static class AveMujicaColorPatches
         }
     }
 
-    [HarmonyPatch(
-        typeof(CharacterModel),
-        nameof(CharacterModel.MapDrawingColor),
-        MethodType.Getter
-    )]
-    internal static class ReplaceMapDrawingColor
-    {
-        internal static void Postfix(ref Color __result, CharacterModel __instance)
-        {
-            if (__instance is AveMujica.AveMujicaCode.Character.AveMujica) __result = DarkColor;
-        }
-    }
+    // [HarmonyPatch(
+    //     typeof(CharacterModel),
+    //     nameof(CharacterModel.MapDrawingColor),
+    //     MethodType.Getter
+    // )]
+    // internal static class ReplaceMapDrawingColor
+    // {
+    //     internal static void Postfix(ref Color __result, CharacterModel __instance)
+    //     {
+    //         if (__instance is AveMujica.AveMujicaCode.Character.AveMujica) __result = DarkColor;
+    //     }
+    // }
     
     [HarmonyPatch(
         typeof(CharacterModel),
@@ -50,16 +50,16 @@ public static class AveMujicaColorPatches
         }
     }
 
-    [HarmonyPatch(
-        typeof(AveMujica.AveMujicaCode.Character.AveMujicaCardPool),
-        nameof(AveMujica.AveMujicaCode.Character.AveMujicaCardPool.DeckEntryCardColor),
-        MethodType.Getter
-    )]
-    internal static class ReplaceDeckEntryCardColor
-    {
-        internal static void Postfix(ref Color __result)
-        {
-            __result = BrightColor;
-        }
-    }
+    // [HarmonyPatch(
+    //     typeof(AveMujica.AveMujicaCode.Character.AveMujicaCardPool),
+    //     nameof(AveMujica.AveMujicaCode.Character.AveMujicaCardPool.DeckEntryCardColor),
+    //     MethodType.Getter
+    // )]
+    // internal static class ReplaceDeckEntryCardColor
+    // {
+    //     internal static void Postfix(ref Color __result)
+    //     {
+    //         __result = BrightColor;
+    //     }
+    // }
 }
