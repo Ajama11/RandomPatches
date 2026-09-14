@@ -38,7 +38,7 @@
     <ItemGroup>
         <PackageReference Include="Alchyr.Sts2.BaseLib" Version="*" PrivateAssets="All"/>
         <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="All"/>
-        <PackageReference Include="Alchyr.Sts2.ModAnalyzers" Version="*"/>
+        <PackageReference Include="Alchyr.Sts2.ModAnalyzers" Version="0.1.9" />
         <!-- Generates a .pck file when building if only using simple assets. May not work on all setups. Uncomment to test. -->
         <!-- <PackageReference Include="BSchneppe.StS2.PckPacker" Version="0.1.1" PrivateAssets="All" /> -->
         <AdditionalFiles Include="RandomPatches/localization/**/*.json"/> <!-- Used by analyzer -->
@@ -48,11 +48,9 @@
         <Compile Remove="RandomPatches/**"/>
         <Compile Remove="materials/**"/>
         <Compile Remove="shaders/**"/>
-        <Compile Remove="images/**"/>
         <EmbeddedResource Remove="RandomPatches/**"/>
         <EmbeddedResource Remove="materials/**"/>
         <EmbeddedResource Remove="shaders/**"/>
-        <EmbeddedResource Remove="images/**"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -67,6 +65,12 @@
     <ItemGroup>
         <Folder Include="RandomPatches\images\card_portraits\big\"/>
         <Folder Include="RandomPatches\images\powers\big\"/>
+        <Folder Include="RandomPatches\scenes\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="images\ui\run_history\unknown_rest_site.png" />
+      <Content Include="images\ui\run_history\unknown_rest_site_outline.png" />
     </ItemGroup>
 
     <Target Name="CheckDependencyPaths">
