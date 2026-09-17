@@ -1,4 +1,6 @@
 {
   "ROOM_UNKNOWN_REST.title": "Unknown - Rest Site",
-  "ROOM_UNKNOWN_REST.description": "A previously unknown room containing a safe haven."
+  "ROOM_UNKNOWN_REST.description": "A previously unknown room containing a safe haven.",
+  "RANDOMPATCHES-OSTY_HP.title": "Osty's HP",
+  "RANDOMPATCHES-OSTY_HP.description": "{Current}/{Max}"
 }

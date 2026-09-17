@@ -28,10 +28,11 @@ public static class OtherAncientOptionPatch
         {
             sameAncientOptions.AddRange(CreateOptionsForAncient(ancient, __instance, options));
         }
-        
+
+        List<EventOption> neowOptions = ModelDb.AncientEvent<Neow>().AllPossibleOptions.ToList(); // For Angela, and any other Act 1 Ancients that piggyback off of her options
         foreach (var ancient in ModelDb.AllAncients.Where(a => a is not Neow && __instance.GetType() != a.GetType()))
         {
-            otherAncientOptions.AddRange(CreateOptionsForAncient(ancient, __instance));
+            otherAncientOptions.AddRange(CreateOptionsForAncient(ancient, __instance, neowOptions));
         }
 
         if (sameAncientOptions.Count != 0)
