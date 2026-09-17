@@ -1,6 +1,10 @@
 {
   "ROOM_UNKNOWN_REST.title": "Unknown - Rest Site",
   "ROOM_UNKNOWN_REST.description": "A previously unknown room containing a safe haven.",
-  "RANDOMPATCHES-OSTY_HP.title": "Osty's HP",
-  "RANDOMPATCHES-OSTY_HP.description": "{Current}/{Max}"
+  "RANDOMPATCHES-PET_HP.title_osty": "Osty's HP",
+  "RANDOMPATCHES-PET_HP.description_osty": "{Current}/{Max}",
+  "RANDOMPATCHES-PET_HP.title_torchhead": "Torchhead's HP",
+  "RANDOMPATCHES-PET_HP.description_torchhead": "{Current}/{Max}",
+  "RANDOMPATCHES-PET_HP.title_multiple": "Pet HPs",
+  "RANDOMPATCHES-PET_HP.description_multiple": "{OstyPresent:Osty = {OstyCurrent}/{OstyMax}\n|}{TorchheadPresent:Torchhead = {TorchheadCurrent}/{TorchheadMax}|}"
 }
