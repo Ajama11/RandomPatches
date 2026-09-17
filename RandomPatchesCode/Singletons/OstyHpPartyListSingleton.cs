@@ -17,7 +17,6 @@ public class OstyHpPartyListSingleton() : CustomSingletonModel(HookType.Combat)
     {
         var hpBar = (NHealthBar) state._healthBar.Duplicate();
         
-        // hpBar.Position = state._healthBar.Position + new Vector2(0, 17);
         hpBar.Position = OstyHpBarPosition;
         
         hpBar._blockTrackingCreature = state.Player.Creature;
@@ -34,11 +33,13 @@ public class OstyHpPartyListSingleton() : CustomSingletonModel(HookType.Combat)
             .Find(s => 
                 s.Player == creature.PetOwner);
         if (state == null) return Task.CompletedTask;
-        
+
+        OstyHpBar[state]._creature = null!;
         OstyHpBar[state].SetCreature(creature);
+        
         OstyHpBar[state].FadeOutHpLabel(0, 0);
         OstyHpBar[state]._hpLabel.ZIndex = 1;
-        OstyHpBar[state].Position = OstyHpBarPosition; // Please just stay there...
+
         state.MoveChild(OstyHpBar[state], 0);
 
         UpdateOstyValues(state);
@@ -66,7 +67,12 @@ public class OstyHpPartyListSingleton() : CustomSingletonModel(HookType.Combat)
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (OstyHpBar[state]._creature == null) return;
         
-        OstyHpBar[state].UpdateWidthRelativeToReferenceValue(80f, 175f);
+        OstyHpBar[state].SetHpBarContainerSizeWithOffsetsImmediately(OstyHpBar[state].HpBarContainer.Size with
+        {
+            X = Math.Max(OstyHpBar[state]._creature.MaxHp / 80f * 175f,
+                         15 / 80f * 175f)
+        });
+        
         OstyHpBar[state].RefreshValues();
     }
 }
