@@ -105,8 +105,10 @@ public class OstyHpPartyListSingleton() : CustomSingletonModel(HookType.Combat)
         
         OstyHpBar[state].SetHpBarContainerSizeWithOffsetsImmediately(OstyHpBar[state].HpBarContainer.Size with
         {
-            X = Math.Max(OstyHpBar[state]._creature.MaxHp / 80f * 175f,
-                         15 / 80f * 175f)
+            X = Math.Max(
+                OstyHpBar[state]._creature.MaxHp / 80f * 175f,
+                (OstyHpBar[state]._creature.MaxHp + 20) / 120f * 175f
+            )
         });
         
         OstyHpBar[state].RefreshValues();
