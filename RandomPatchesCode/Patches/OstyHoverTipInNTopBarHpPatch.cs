@@ -14,6 +14,10 @@ namespace RandomPatches.RandomPatchesCode.Patches;
 [HarmonyPatch(typeof(NTopBarHp))]
 public static class OstyHoverTipInNTopBarHpPatch
 {
+    // HORRENDOUS CODE BELOW
+    // NO GODS TRAVERSE THIS LAND
+    // FOR THEY WOULD HAVE STOPPED ME
+    
     [HarmonyPatch("OnFocus")]
     [HarmonyPrefix]
     public static bool OnFocusPrefix(NTopBarHp __instance)
@@ -23,70 +27,137 @@ public static class OstyHoverTipInNTopBarHpPatch
         
         const string str = "RANDOMPATCHES-PET_HP";
 
-        LocString title;
-        LocString description;
+        LocString title = HoverTipFactory.L10NStatic(str + ".title");
+        LocString description = HoverTipFactory.L10NStatic(str + ".description");
 
-        if (__instance._player.Creature.Pets.Count == 1)
+        int ostyCurrent = 0;
+        int ostyMax = 0;
+        bool ostyPresent = false;
+        bool ostyTanking = false;
+        
+        if (__instance._player.Osty != null)
         {
-            if (__instance._player.Osty != null)
+            var osty = __instance._player.Osty!;
+            ostyCurrent = osty.CurrentHp;
+            ostyMax = osty.MaxHp;
+            ostyPresent = true;
+
+            if (__instance._player.Creature.Pets.Count > 1 &&
+                OstyHpPartyListSingleton.GetWhichOstyLikeWillTank(__instance._player) == osty)
             {
-                title = HoverTipFactory.L10NStatic(str + ".title_osty");
-                description = HoverTipFactory.L10NStatic(str + ".description_osty");
-        
-                description.Add("Current", __instance._player.Osty.CurrentHp);
-                description.Add("Max", __instance._player.Osty.MaxHp);
-            }
-            else if (__instance._player.Creature.Pets.Any(c => c.Monster?.GetType().FullName == OstyHpPartyListSingleton.Torchhead))
-            {
-                title = HoverTipFactory.L10NStatic(str + ".title_torchhead");
-                description = HoverTipFactory.L10NStatic(str + ".description_torchhead");
-        
-                description.Add("Current", __instance._player.Creature.Pets[0].CurrentHp);
-                description.Add("Max", __instance._player.Creature.Pets[0].MaxHp);
-            }
-            else
-            {
-                return true; // This is where other Osty-likes would go
+                ostyTanking = true;
             }
         }
-        else
+        
+        description.Add("OstyCurrent", ostyCurrent);
+        description.Add("OstyMax", ostyMax);
+        description.Add("OstyPresent", ostyPresent);
+        description.Add("OstyTanking", ostyTanking);
+        
+        
+        int torchheadCurrent = 0;
+        bool torchheadPresent = false;
+        bool torchheadTanking = false;
+        
+        var torchhead = __instance._player.Creature.Pets.ToList()
+            .Find(c => c.Monster?.GetType().FullName == OstyHpPartyListSingleton.Torchhead);
+        if (torchhead != null)
         {
-            title = HoverTipFactory.L10NStatic(str + ".title_multiple");
-            description = HoverTipFactory.L10NStatic(str + ".description_multiple");
-
-            int ostyCurrent = 0;
-            int ostyMax = 0;
-            bool ostyPresent = false;
+            torchheadCurrent = torchhead.CurrentHp;
+            torchheadPresent = true;
             
-            if (__instance._player.Osty != null)
+            if (__instance._player.Creature.Pets.Count > 1 &&
+                OstyHpPartyListSingleton.GetWhichOstyLikeWillTank(__instance._player) == torchhead)
             {
-                ostyCurrent = __instance._player.Osty.CurrentHp;
-                ostyMax = __instance._player.Osty.MaxHp;
-                ostyPresent = true;
+                torchheadTanking = true;
             }
-            
-            description.Add("OstyCurrent", ostyCurrent);
-            description.Add("OstyMax", ostyMax);
-            description.Add("OstyPresent", ostyPresent);
-            
-            
-            int torchheadCurrent = 0;
-            int torchheadMax = 0;
-            bool torchheadPresent = false;
-            
-            var torchhead = __instance._player.Creature.Pets.ToList()
-                .Find(c => c.Monster?.GetType().FullName == OstyHpPartyListSingleton.Torchhead);
-            if (torchhead != null)
-            {
-                torchheadCurrent = torchhead.CurrentHp;
-                torchheadMax = torchhead.MaxHp;
-                torchheadPresent = true;
-            }
-            
-            description.Add("TorchheadCurrent", torchheadCurrent);
-            description.Add("TorchheadMax", torchheadMax);
-            description.Add("TorchheadPresent", torchheadPresent);
         }
+        
+        description.Add("TorchheadCurrent", torchheadCurrent);
+        description.Add("TorchheadPresent", torchheadPresent);
+        description.Add("TorchheadTanking", torchheadTanking);
+        
+        
+        int dolorisCurrent = 0;
+        bool dolorisPresent = false;
+        
+        var doloris = __instance._player.Creature.Pets.ToList()
+            .Find(c => c.Monster?.GetType().FullName == OstyHpPartyListSingleton.Doloris);
+        if (doloris != null)
+        {
+            dolorisCurrent = doloris.CurrentHp;
+            dolorisPresent = true;
+        }
+        
+        description.Add("DolorisCurrent", dolorisCurrent);
+        description.Add("DolorisPresent", dolorisPresent);
+        
+        
+        int mortisCurrent = 0;
+        bool mortisPresent = false;
+        bool mortisTanking = false;
+        
+        var mortis = __instance._player.Creature.Pets.ToList()
+            .Find(c => c.Monster?.GetType().FullName == OstyHpPartyListSingleton.Mortis);
+        if (mortis != null)
+        {
+            mortisCurrent = mortis.CurrentHp;
+            mortisPresent = true;
+            
+            if (__instance._player.Creature.Pets.Count > 1 &&
+                OstyHpPartyListSingleton.GetWhichOstyLikeWillTank(__instance._player) == mortis)
+            {
+                mortisTanking = true;
+            }
+        }
+        
+        description.Add("MortisCurrent", mortisCurrent);
+        description.Add("MortisPresent", mortisPresent);
+        description.Add("MortisTanking", mortisTanking);
+        
+        
+        int timorisCurrent = 0;
+        bool timorisPresent = false;
+        
+        var timoris = __instance._player.Creature.Pets.ToList()
+            .Find(c => c.Monster?.GetType().FullName == OstyHpPartyListSingleton.Timoris);
+        if (timoris != null)
+        {
+            timorisCurrent = timoris.CurrentHp;
+            timorisPresent = true;
+        }
+        
+        description.Add("TimorisCurrent", timorisCurrent);
+        description.Add("TimorisPresent", timorisPresent);
+        
+        
+        int amorisCurrent = 0;
+        bool amorisPresent = false;
+        
+        var amoris = __instance._player.Creature.Pets.ToList()
+            .Find(c => c.Monster?.GetType().FullName == OstyHpPartyListSingleton.Amoris);
+        if (amoris != null)
+        {
+            amorisCurrent = amoris.CurrentHp;
+            amorisPresent = true;
+        }
+        
+        description.Add("AmorisCurrent", amorisCurrent);
+        description.Add("AmorisPresent", amorisPresent);
+
+
+        bool ostyNewLine = ostyPresent && (torchheadPresent || dolorisPresent || mortisPresent || timorisPresent || amorisPresent);
+        bool torchheadNewLine = torchheadPresent && (dolorisPresent || mortisPresent || timorisPresent || amorisPresent);
+        bool dolorisNewLine = dolorisPresent && (mortisPresent || timorisPresent || amorisPresent);
+        bool mortisNewLine = mortisPresent && (timorisPresent || amorisPresent);
+        bool timorisNewLine = timorisPresent && amorisPresent;
+        
+        description.Add("OstyNewLine", ostyNewLine);
+        description.Add("TorchheadNewLine", torchheadNewLine);
+        description.Add("DolorisNewLine", dolorisNewLine);
+        description.Add("MortisNewLine", mortisNewLine);
+        description.Add("TimorisNewLine", timorisNewLine);
+        
         
         var tips = NHoverTipSet.CreateAndShow(__instance, new HoverTip(title, description));
         
