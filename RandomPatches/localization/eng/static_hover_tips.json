@@ -4,7 +4,7 @@
   "RANDOMPATCHES-PET_HP.title_osty": "Osty's HP",
   "RANDOMPATCHES-PET_HP.description_osty": "{Current}/{Max}",
   "RANDOMPATCHES-PET_HP.title_torchhead": "Torchhead's HP",
-  "RANDOMPATCHES-PET_HP.description_torchhead": "{Current}/{Max}",
+  "RANDOMPATCHES-PET_HP.description_torchhead": "{Current}",
   "RANDOMPATCHES-PET_HP.title_multiple": "Pet HPs",
-  "RANDOMPATCHES-PET_HP.description_multiple": "{OstyPresent:Osty = {OstyCurrent}/{OstyMax}\n|}{TorchheadPresent:Torchhead = {TorchheadCurrent}/{TorchheadMax}|}"
+  "RANDOMPATCHES-PET_HP.description_multiple": "{OstyPresent:Osty = {OstyCurrent}/{OstyMax}\n|}{TorchheadPresent:Torchhead = {TorchheadCurrent}|}"
 }
