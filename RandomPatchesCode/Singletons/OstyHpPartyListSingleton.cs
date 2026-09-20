@@ -1,9 +1,11 @@
 using BaseLib.Abstracts;
 using BaseLib.Utils;
 using Godot;
+using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Monsters;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -15,24 +17,38 @@ namespace RandomPatches.RandomPatchesCode.Singletons;
 
 public class OstyHpPartyListSingleton() : CustomSingletonModel(HookType.Combat)
 {
-    public static readonly Vector2 OstyHpBarPosition = new (63, 58);
+    public static readonly ModelId GotYourBackPower = new("POWER", "THEHEROEXPANSION-GOT_YOUR_BACK_POWER");
+    public static readonly string OstyIcon = ImageHelper.GetImagePath("atlases/power_atlas.sprites/die_for_you_power.tres");
     
     public const string Torchhead = "Collector.CollectorCode.Core.TorchheadMonsterModel";
+    public static readonly string TorchheadIcon = "res://Collector/images/atlases/power_atlas.sprites/torchhead_power.tres";
     
     public const string Doloris = "AveMujica.AveMujicaCode.Cards.Dolls.DolorisDoll";
     public const string Mortis = "AveMujica.AveMujicaCode.Cards.Dolls.MortisDoll";
     public const string Timoris = "AveMujica.AveMujicaCode.Cards.Dolls.TimorisDoll";
     public const string Amoris = "AveMujica.AveMujicaCode.Cards.Dolls.AmorisDoll";
     public static readonly ModelId MortisPower = new ("POWER", "AVEMUJICA-DO_NOT_FEAR_DEATH_POWER");
+    public static readonly string MortisIcon = "res://AveMujica/images/powers/do_not_fear_death_power.png";
 
-    public static readonly ModelId GotYourBackPower = new("POWER", "THEHEROEXPANSION-GOT_YOUR_BACK_POWER");
+    public static readonly AddedNode<NHealthBar, TextureRect> OstyHpBarIcon = new(bar =>
+    {
+        TextureRect icon = new TextureRect();
+
+        icon.ExpandMode = TextureRect.ExpandModeEnum.FitWidth;
+        icon.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
+        icon.Size = new Vector2(24, 24);
+        icon.Position = new Vector2(-22, -4.5f);
+        icon.MouseFilter = Control.MouseFilterEnum.Ignore;
+        icon.Visible = false;
+        
+        return icon;
+    });
     
-    public static AddedNode<NMultiplayerPlayerState, NHealthBar> OstyHpBar = new(state =>
+    public static readonly AddedNode<NMultiplayerPlayerState, NHealthBar> OstyHpBar = new(state =>
     {
         var hpBar = (NHealthBar) state._healthBar.Duplicate();
         
-        hpBar.Position = OstyHpBarPosition;
-        
+        hpBar.Position = new Vector2(63, 58);
         hpBar._blockTrackingCreature = state.Player.Creature;
         hpBar.Visible = false;
 
@@ -101,7 +117,26 @@ public class OstyHpPartyListSingleton() : CustomSingletonModel(HookType.Combat)
         OstyHpBar[state]._hpLabel.ZIndex = 1;
 
         state.MoveChild(OstyHpBar[state], 0);
+        
+        string iconPath;
 
+        if (creature.Monster is Osty)
+        {
+            iconPath = OstyIcon;
+        }
+        else
+        {
+            iconPath = creature.Monster?.GetType().FullName switch
+            {
+                Torchhead => TorchheadIcon,
+                Mortis => MortisIcon,
+                _ => ImageHelper.GetImagePath("atlases/power_atlas.sprites/guarded_power.tres")
+            };
+        }
+
+        OstyHpBarIcon[OstyHpBar[state]].Texture = PreloadManager.Cache.GetTexture2D(iconPath);
+        OstyHpBarIcon[OstyHpBar[state]].Visible = true;
+        
         UpdateOstyValues(state);
         OstyHpBar[state].Visible = true;
     }
