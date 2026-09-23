@@ -64,6 +64,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="RandomPatchesCode\Singletons\" />
         <Folder Include="RandomPatches\images\card_portraits\big\"/>
         <Folder Include="RandomPatches\images\powers\big\"/>
         <Folder Include="RandomPatches\scenes\" />
