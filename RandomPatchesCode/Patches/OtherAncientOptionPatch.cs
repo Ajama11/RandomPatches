@@ -63,7 +63,10 @@ public static class OtherAncientOptionPatch
 
         if (denylist != null)
         {
-            exists.AddRange(denylist.Select(o => o.Relic!.Id));
+            exists.AddRange(denylist
+                .Where(o => o.Relic != null)
+                .Select(o => o.Relic!.Id)
+            );
         }
 
         for (int i = 0; i < 10; i++)
