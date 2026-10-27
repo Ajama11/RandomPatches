@@ -70,11 +70,6 @@
         <Folder Include="RandomPatches\scenes\" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Include="images\ui\run_history\unknown_rest_site.png" />
-      <Content Include="images\ui\run_history\unknown_rest_site_outline.png" />
-    </ItemGroup>
-
     <Target Name="CheckDependencyPaths">
         <Error
                 Text=" Slay the Spire 2 data not found at path '$(Sts2DataDir)'"
