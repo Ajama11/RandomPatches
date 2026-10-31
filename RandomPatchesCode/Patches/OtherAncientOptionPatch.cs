@@ -12,6 +12,32 @@ namespace RandomPatches.RandomPatchesCode.Patches;
 [HarmonyPatch]
 public static class OtherAncientOptionPatch
 {
+    private static readonly List<List<ModelId>> ActDenyLists = 
+    [
+        [
+            // Act 1
+            new ModelId("RELIC", "FUR_COAT"),
+            new ModelId("RELIC", "GLITTER"),
+            new ModelId("RELIC", "JEWELRY_BOX"),
+            new ModelId("RELIC", "GOLDEN_COMPASS"),
+            new ModelId("RELIC", "ANCIENTSAWAKENED-REFINED_CHLOROPHYTE"),
+            new ModelId("RELIC", "ANCIENTSAWAKENED-MANA_FLOWER"),
+            new ModelId("RELIC", "ANCIENTSAWAKENED-EULOGY_ZERO"),
+            new ModelId("RELIC", "ANCIENTSAWAKENED-SHAPED_GLASS"),
+        ],
+        [
+            // Act 2
+            new ModelId("RELIC", "FUR_COAT"),
+            new ModelId("RELIC", "GLITTER"),
+            new ModelId("RELIC", "JEWELRY_BOX"),
+            new ModelId("RELIC", "ANCIENTSAWAKENED-REFINED_CHLOROPHYTE"),
+        ],
+        [
+            // Act 3
+            new ModelId("RELIC", "GOLDEN_COMPASS"),
+        ]
+    ];
+    
     [HarmonyPatch(typeof(AncientEventModel), "GenerateInitialOptionsWrapper")]
     [HarmonyPostfix]
     public static void WrapperPostfix(AncientEventModel __instance, ref IReadOnlyList<EventOption> __result)
@@ -68,6 +94,8 @@ public static class OtherAncientOptionPatch
                 .Select(o => o.Relic!.Id)
             );
         }
+
+        exists.AddRange(ActDenyLists[instance.Owner.RunState.CurrentActIndex]);
 
         for (int i = 0; i < 10; i++)
         {
